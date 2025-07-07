@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Modern Website</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font import (Inter) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light gray background */
+            color: #2d3748; /* Dark gray text */
+        }
+        /* Custom styles for sections to ensure proper padding and max width */
+        .section-padding {
+            padding: 3rem 1rem; /* Default padding for mobile */
+            max-width: 1200px; /* Max width for content */
+            margin: 0 auto; /* Center content */
+        }
+        @media (min-width: 640px) { /* sm breakpoint */
+            .section-padding {
+                padding: 4rem 2rem; /* Larger padding for tablets and desktops */
+            }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .section-padding {
+                padding: 6rem 3rem; /* Even larger padding for large desktops */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header/Navigation (Optional, but good for a full site) -->
+    <header class="bg-white shadow-sm py-4">
+        <nav class="section-padding flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-indigo-600">YourLogo</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#home" class="text-gray-600 hover:text-indigo-600 transition duration-300">Home</a>
+                <a href="#about" class="text-gray-600 hover:text-indigo-600 transition duration-300">About</a>
+                <a href="#services" class="text-gray-600 hover:text-indigo-600 transition duration-300">Services</a>
+                <a href="#contact" class="text-gray-600 hover:text-indigo-600 transition duration-300">Contact</a>
+            </div>
+            <!-- Mobile Menu Button (Hamburger icon) - for future expansion -->
+            <button class="md:hidden text-gray-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-center py-20 md:py-32 section-padding rounded-b-lg shadow-lg">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-down">
+            Welcome to Your Modern Website
+        </h1>
+        <p class="text-lg sm:text-xl lg:text-2xl mb-8 opacity-90 animate-fade-in-up">
+            Crafting beautiful and functional web experiences for a digital world.
+        </p>
+        <button class="bg-white text-indigo-700 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 hover:scale-105 transition duration-300 ease-in-out transform animate-pop-in">
+            Get Started Today
+        </button>
+    </section>
+
+    <!-- About/Features Section -->
+    <section id="about" class="bg-white py-16 section-padding rounded-lg shadow-md mt-8 mx-4 sm:mx-auto">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-800">
+            What We Offer
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature Card 1 -->
+            <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1">
+                <div class="text-indigo-500 mb-4">
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1l-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-gray-700">Responsive Design</h3>
+                <p class="text-gray-600">
+                    Your website will look stunning and function perfectly on any device, from desktops to smartphones.
+                </p>
+            </div>
+            <!-- Feature Card 2 -->
+            <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1">
+                <div class="text-indigo-500 mb-4">
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-gray-700">Blazing Fast Performance</h3>
+                <p class="text-gray-600">
+                    Optimized for speed, ensuring a smooth and enjoyable user experience for all your visitors.
+                </p>
+            </div>
+            <!-- Feature Card 3 -->
+            <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1">
+                <div class="text-indigo-500 mb-4">
+                    <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-gray-700">Scalable Solutions</h3>
+                <p class="text-gray-600">
+                    Our designs are built to grow with your needs, adapting to future demands effortlessly.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-gray-800 text-white py-16 section-padding rounded-lg shadow-md mt-8 mx-4 sm:mx-auto">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">
+            Get in Touch
+        </h2>
+        <div class="max-w-md mx-auto">
+            <p class="text-center mb-8 text-lg opacity-90">
+                Have a project in mind or just want to say hello? Send us a message!
+            </p>
+            <form class="space-y-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                    <input type="text" id="name" name="name" class="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-400" placeholder="Your Name">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                    <input type="email" id="email" name="email" class="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-400" placeholder="your.email@example.com">
+                </div>
+                <div>
+                    <label for="message" class="block text-sm font-medium text-gray-300 mb-1">Message</label>
+                    <textarea id="message" name="message" rows="4" class="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-gray-400" placeholder="Your message..."></textarea>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-md hover:bg-indigo-700 transition duration-300 ease-in-out shadow-lg">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 mt-8 rounded-t-lg">
+        <div class="section-padding text-center text-sm">
+            <p>&copy; 2025 Your Modern Website. All rights reserved.</p>
+            <p class="mt-2">Designed with <span class="text-red-500">&hearts;</span> by Gemini AI</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+
