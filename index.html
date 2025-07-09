@@ -47,7 +47,7 @@
             /* Grid will be dynamically set by JS (e.g., grid-template-columns: repeat(3, 1fr);) */
             gap: 5px; /* Gap between puzzle pieces */
             width: 100%; /* Puzzle board takes full width of container */
-            padding-bottom: 100%; /* Maintain 1:1 aspect ratio for the board */
+            /* Removed padding-bottom: 100%; here, will set height in JS */
             position: relative; /* For absolute positioning of tiles */
             background-color: #4a5568; /* Background for the board */
             border-radius: 8px;
@@ -208,25 +208,28 @@
                 currentOrder.push(i); // Initial order (0, 1, 2, ..., 8)
             }
 
-            // Call renderPuzzle after a small delay to ensure layout is stable
-            // This is the key fix for the layout issue on some mobile browsers
-            setTimeout(() => {
-                const boardSize = puzzleBoard.offsetWidth;
-                puzzleBoard.style.setProperty('--grid-size-px', `${boardSize}px`);
-                renderPuzzle(); // Render the initial (solved) puzzle
-                messageDisplay.textContent = 'Click Shuffle to start!';
-            }, 100); // Small delay of 100ms
+            // Explicitly set the puzzle board's width and height to be square
+            // This is the main fix for the layout issue
+            const boardSize = puzzleBoard.offsetWidth; // Get current calculated width
+            puzzleBoard.style.width = `${boardSize}px`;
+            puzzleBoard.style.height = `${boardSize}px`;
+            puzzleBoard.style.setProperty('--grid-size-px', `${boardSize}px`); // Update CSS variable
+
+            renderPuzzle(); // Render the initial (solved) puzzle
+            messageDisplay.textContent = 'Click Shuffle to start!';
         }
 
         // --- Render Puzzle ---
         // Positions tiles based on their currentOrder
         function renderPuzzle() {
             puzzleBoard.innerHTML = ''; // Clear existing tiles
-            const boardWidth = puzzleBoard.offsetWidth;
+            const boardWidth = puzzleBoard.offsetWidth; // Re-get width as it might change on resize
             tileWidth = boardWidth / gridSize;
             tileHeight = boardWidth / gridSize; // Assuming square tiles
 
-            // Update --grid-size-px CSS variable before rendering tiles
+            // Ensure board is square before rendering tiles
+            puzzleBoard.style.width = `${boardWidth}px`;
+            puzzleBoard.style.height = `${boardWidth}px`;
             puzzleBoard.style.setProperty('--grid-size-px', `${boardWidth}px`);
 
 
@@ -307,10 +310,7 @@
             initializePuzzle();
             // Add a resize listener to ensure background-size is correct if board resizes
             window.addEventListener('resize', () => {
-                // Re-calculate board size and re-render on resize
-                const boardSize = puzzleBoard.offsetWidth;
-                puzzleBoard.style.setProperty('--grid-size-px', `${boardSize}px`);
-                renderPuzzle();
+                renderPuzzle(); // Re-render to ensure correct positioning on resize
             });
         };
     </script>
