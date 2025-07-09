@@ -176,10 +176,6 @@
 
             // Set CSS variables for grid size for responsive tiles
             puzzleBoard.style.setProperty('--grid-size', gridSize);
-            // Calculate the actual pixel size of the board to set background-size correctly
-            // This needs to be done after the board is rendered, or on window load/resize
-            const boardSize = puzzleBoard.offsetWidth;
-            puzzleBoard.style.setProperty('--grid-size-px', `${boardSize}px`);
 
             // Create tiles
             for (let i = 0; i < totalTiles; i++) {
@@ -212,8 +208,14 @@
                 currentOrder.push(i); // Initial order (0, 1, 2, ..., 8)
             }
 
-            renderPuzzle(); // Render the initial (solved) puzzle
-            messageDisplay.textContent = 'Click Shuffle to start!';
+            // Call renderPuzzle after a small delay to ensure layout is stable
+            // This is the key fix for the layout issue on some mobile browsers
+            setTimeout(() => {
+                const boardSize = puzzleBoard.offsetWidth;
+                puzzleBoard.style.setProperty('--grid-size-px', `${boardSize}px`);
+                renderPuzzle(); // Render the initial (solved) puzzle
+                messageDisplay.textContent = 'Click Shuffle to start!';
+            }, 100); // Small delay of 100ms
         }
 
         // --- Render Puzzle ---
@@ -223,6 +225,10 @@
             const boardWidth = puzzleBoard.offsetWidth;
             tileWidth = boardWidth / gridSize;
             tileHeight = boardWidth / gridSize; // Assuming square tiles
+
+            // Update --grid-size-px CSS variable before rendering tiles
+            puzzleBoard.style.setProperty('--grid-size-px', `${boardWidth}px`);
+
 
             currentOrder.forEach((originalIdx, currentPos) => {
                 const tile = tiles[originalIdx]; // Get the actual tile element
@@ -301,9 +307,10 @@
             initializePuzzle();
             // Add a resize listener to ensure background-size is correct if board resizes
             window.addEventListener('resize', () => {
+                // Re-calculate board size and re-render on resize
                 const boardSize = puzzleBoard.offsetWidth;
                 puzzleBoard.style.setProperty('--grid-size-px', `${boardSize}px`);
-                renderPuzzle(); // Re-render to ensure correct positioning on resize
+                renderPuzzle();
             });
         };
     </script>
