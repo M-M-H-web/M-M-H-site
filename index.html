@@ -34,16 +34,22 @@
             background: #fff;
         }
         .puzzle-tile {
-            position: absolute;
-            background-size: cover;
-            border: 1px solid #ddd;
-            transition: all 0.2s;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(0,0,0,0.5);
-            font-weight: bold;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-size: cover;          /* ← Makes image fill tiles */
+    background-position: center;     /* ← Centers image segments */
+    background-repeat: no-repeat;    /* ← Prevents repetition */
+    border: 1px solid #ddd;
+    transition: all 0.2s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0,0,0,0.5);
+    font-weight: bold;
+}
+```
         }
         .puzzle-tile:hover {
             transform: scale(1.02);
