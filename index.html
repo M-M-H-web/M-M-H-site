@@ -1,79 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Potato Farm Puzzle</title>
+    <title>Pomato Puzzle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             background: #e6f7e6;
             padding: 20px;
+            margin: 0;
         }
         h1 {
             color: #8b4513;
-            margin-bottom: 10px;
+            margin: 10px 0;
+        }
+        #header-image {
+            max-width: 200px;
+            border-radius: 10px;
+            border: 3px solid #8b4513;
+            margin: 0 auto;
+            display: block;
+        }
+        #difficulty {
+            margin: 15px 0;
         }
         #puzzle-container {
-            width: 400px;
-            height: 400px;
-            margin: 20px auto;
+            margin: 0 auto;
             position: relative;
             border: 3px solid #8b4513;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background: #fff;
         }
         .puzzle-tile {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            background-size: 400px 400px;
+            background-size: cover;
             border: 1px solid #ddd;
             transition: all 0.2s;
             cursor: pointer;
-            font-size: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            text-shadow: 1px 1px 2px black;
+            color: rgba(0,0,0,0.5);
+            font-weight: bold;
         }
         .puzzle-tile:hover {
             transform: scale(1.02);
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
         }
         #controls {
-            margin: 20px;
+            margin: 15px 0;
         }
         button {
             background: #8b4513;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 15px;
             margin: 5px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
         }
         button:hover {
             background: #a0522d;
         }
-        #moves {
+        #moves, #win-message {
             font-size: 18px;
             margin: 10px;
             font-weight: bold;
         }
         #win-message {
-            font-size: 24px;
             color: #8b4513;
-            font-weight: bold;
-            margin: 20px;
-            height: 30px;
+            min-height: 24px;
+        }
+        @media (max-width: 500px) {
+            #puzzle-container {
+                width: 90vw;
+                height: 90vw;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Potato Farm Puzzle</h1>
-    <p>Rearrange the tiles to complete the picture!</p>
+    <img id="header-image" src="poisonous-pomato-berry.jpg" alt="Poisonous Pomato Berry">
+    <h1>Pomato Puzzle</h1>
+    
+    <div id="difficulty">
+        <button id="easy-btn">Easy (3×3)</button>
+        <button id="medium-btn">Medium (4×4)</button>
+        <button id="hard-btn">Hard (5×5)</button>
+    </div>
     
     <div id="moves">Moves: 0</div>
     <div id="win-message"></div>
@@ -82,50 +99,58 @@
     
     <div id="controls">
         <button id="shuffle-btn">Shuffle</button>
-        <button id="new-image-btn">New Image</button>
     </div>
 
     <script>
         // Game variables
         const puzzleContainer = document.getElementById('puzzle-container');
         const shuffleBtn = document.getElementById('shuffle-btn');
-        const newImageBtn = document.getElementById('new-image-btn');
         const movesDisplay = document.getElementById('moves');
         const winMessage = document.getElementById('win-message');
+        const easyBtn = document.getElementById('easy-btn');
+        const mediumBtn = document.getElementById('medium-btn');
+        const hardBtn = document.getElementById('hard-btn');
         
+        let size = 4; // Default medium (4×4)
         let tiles = [];
-        let emptyPos = {row: 3, col: 3};
+        let emptyPos = {row: size-1, col: size-1};
         let moves = 0;
         let gameStarted = false;
-        
-        // Potato farm image (can be changed)
-        let currentImage = 'https://i.imgur.com/JnJtZP5.jpg';
+        const imageUrl = 'poisonous-pomato-berry.jpg';
         
         // Initialize the game
         function initGame() {
             puzzleContainer.innerHTML = '';
+            puzzleContainer.style.width = `${size * 100}px`;
+            puzzleContainer.style.height = `${size * 100}px`;
+            
             tiles = [];
             moves = 0;
             movesDisplay.textContent = 'Moves: 0';
             winMessage.textContent = '';
             gameStarted = false;
+            emptyPos = {row: size-1, col: size-1};
             
             // Create tiles
-            for (let row = 0; row < 4; row++) {
-                for (let col = 0; col < 4; col++) {
+            for (let row = 0; row < size; row++) {
+                for (let col = 0; col < size; col++) {
                     // Skip the bottom-right tile (empty space)
-                    if (row === 3 && col === 3) continue;
+                    if (row === size-1 && col === size-1) continue;
                     
                     const tile = document.createElement('div');
                     tile.className = 'puzzle-tile';
-                    tile.style.backgroundImage = `url(${currentImage})`;
-                    tile.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+                    tile.style.width = `${100/size}%`;
+                    tile.style.height = `${100/size}%`;
+                    tile.style.backgroundImage = `url(${imageUrl})`;
+                    tile.style.backgroundPosition = `-${col * (100/size)}% -${row * (100/size)}%`;
                     tile.dataset.row = row;
                     tile.dataset.col = col;
                     tile.dataset.correctRow = row;
                     tile.dataset.correctCol = col;
                     
-                    tile.textContent = (row * 4 + col + 1).toString();
+                    if (size <= 4) {
+                        tile.textContent = (row * size + col + 1).toString();
+                    }
                     
                     tile.addEventListener('click', () => moveTile(tile));
                     
@@ -140,8 +165,8 @@
         
         // Update tile position on screen
         function updateTilePosition(tile, row, col) {
-            tile.style.left = `${col * 100}px`;
-            tile.style.top = `${row * 100}px`;
+            tile.style.left = `${col * (100/size)}%`;
+            tile.style.top = `${row * (100/size)}%`;
             tile.dataset.row = row;
             tile.dataset.col = col;
         }
@@ -187,40 +212,38 @@
         function shuffleTiles() {
             if (gameStarted) return;
             
-            // Fisher-Yates shuffle algorithm
+            const totalTiles = size * size - 1;
             const positions = [];
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < totalTiles; i++) {
                 positions.push(i);
             }
             
-            // Shuffle the positions
+            // Fisher-Yates shuffle
             for (let i = positions.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [positions[i], positions[j]] = [positions[j], positions[i]];
             }
             
-            // Update tile positions
-            emptyPos = {row: 3, col: 3};
+            emptyPos = {row: size-1, col: size-1};
             let index = 0;
             
-            for (let row = 0; row < 4; row++) {
-                for (let col = 0; col < 4; col++) {
-                    if (row === 3 && col === 3) continue;
+            for (let row = 0; row < size; row++) {
+                for (let col = 0; col < size; col++) {
+                    if (row === size-1 && col === size-1) continue;
                     
                     const pos = positions[index];
-                    const tileRow = Math.floor(pos / 4);
-                    const tileCol = pos % 4;
+                    const tileRow = Math.floor(pos / size);
+                    const tileCol = pos % size;
                     
                     updateTilePosition(tiles[index], tileRow, tileCol);
                     index++;
                 }
             }
             
-            // Make sure the puzzle is solvable
+            // Ensure the puzzle is solvable
             if (!isSolvable(positions)) {
-                // If not solvable, swap first two tiles
                 [positions[0], positions[1]] = [positions[1], positions[0]];
-                shuffleTiles(); // Recursively shuffle again
+                shuffleTiles();
             }
         }
         
@@ -229,41 +252,22 @@
             let inversions = 0;
             for (let i = 0; i < positions.length; i++) {
                 for (let j = i + 1; j < positions.length; j++) {
-                    if (positions[i] > positions[j]) {
-                        inversions++;
-                    }
+                    if (positions[i] > positions[j]) inversions++;
                 }
             }
-            // For 4x4 puzzle, solvable if:
-            // (inversions is even and empty row is odd) or (inversions is odd and empty row is even)
-            return (inversions % 2 === 0) === (emptyPos.row % 2 === 1);
-        }
-        
-        // Change the puzzle image
-        function changeImage() {
-            const images = [
-                'https://i.imgur.com/JnJtZP5.jpg', // Russet potato
-                'https://i.imgur.com/5bGJVZ3.jpg', // Red potato
-                'https://i.imgur.com/8zUv9mY.jpg', // Sweet potato
-                'https://i.imgur.com/3qYQZ7j.jpg'  // Fingerling potato
-            ];
             
-            currentImage = images[Math.floor(Math.random() * images.length)];
-            initGame();
+            if (size % 2 === 1) return inversions % 2 === 0;
+            return (inversions + emptyPos.row) % 2 === 1;
         }
         
         // Event listeners
-        shuffleBtn.addEventListener('click', () => {
-            if (!gameStarted) {
-                shuffleTiles();
-            }
-        });
-        
-        newImageBtn.addEventListener('click', changeImage);
+        shuffleBtn.addEventListener('click', shuffleTiles);
+        easyBtn.addEventListener('click', () => { size = 3; initGame(); });
+        mediumBtn.addEventListener('click', () => { size = 4; initGame(); });
+        hardBtn.addEventListener('click', () => { size = 5; initGame(); });
         
         // Start the game
         initGame();
     </script>
 </body>
 </html>
-```
