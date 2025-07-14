@@ -1,141 +1,308 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Pomato Puzzle</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomato Puzzle Game</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: #e6f7e6;
-            padding: 20px;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        
+        body {
+            background: linear-gradient(135deg, #8bc34a, #4caf50);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #2e3a33;
+        }
+        
+        header {
+            text-align: center;
+            margin: 20px 0 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+        
         h1 {
-            color: #8b4513;
-            margin: 10px 0;
+            font-size: 2.8rem;
+            color: #f9f9f9;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #8b4513, #5d4037);
+            padding: 15px 25px;
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-        #header-image {
-            max-width: 200px;
-            border-radius: 10px;
-            border: 3px solid #8b4513;
-            margin: 0 auto;
-            display: block;
+        
+        .game-container {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
         }
-        #difficulty {
-            margin: 15px 0;
+        
+        .difficulty-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
         }
-        #puzzle-container {
-            margin: 0 auto;
-            position: relative;
-            border: 3px solid #8b4513;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            background: #fff;
-        }
-        .puzzle-tile {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background-size: cover;          /* ← Makes image fill tiles */
-    background-position: center;     /* ← Centers image segments */
-    background-repeat: no-repeat;    /* ← Prevents repetition */
-    border: 1px solid #ddd;
-    transition: all 0.2s;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(0,0,0,0.5);
-    font-weight: bold;
-}
-```
-        }
-        .puzzle-tile:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-        }
-        #controls {
-            margin: 15px 0;
-        }
-        button {
+        
+        .diff-btn {
             background: #8b4513;
             color: white;
             border: none;
-            padding: 8px 15px;
-            margin: 5px;
-            border-radius: 5px;
+            padding: 12px 20px;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            min-width: 120px;
         }
-        button:hover {
+        
+        .diff-btn:hover {
             background: #a0522d;
+            transform: translateY(-3px);
         }
-        #moves, #win-message {
-            font-size: 18px;
-            margin: 10px;
+        
+        .diff-btn.active {
+            background: #5d4037;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: #f5f5dc;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.2rem;
             font-weight: bold;
         }
-        #win-message {
-            color: #8b4513;
-            min-height: 24px;
+        
+        .puzzle-container {
+            width: 100%;
+            height: 400px;
+            margin: 0 auto 25px;
+            position: relative;
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            background: #f0e68c;
         }
-        @media (max-width: 500px) {
-            #puzzle-container {
-                width: 90vw;
-                height: 90vw;
+        
+        .puzzle-tile {
+            position: absolute;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            border: 1px solid rgba(139, 69, 19, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .puzzle-tile:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+        
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .control-btn {
+            background: #5d4037;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            min-width: 150px;
+        }
+        
+        .control-btn:hover {
+            background: #8b4513;
+            transform: translateY(-3px);
+        }
+        
+        .win-message {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #8b4513;
+            font-weight: bold;
+            margin-top: 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(245, 245, 220, 0.8);
+            border-radius: 12px;
+            padding: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #f9f9f9;
+            font-size: 1rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+        
+        .instructions h3 {
+            color: white;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .instructions p {
+            color: #f0f0f0;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        @media (max-width: 600px) {
+            .puzzle-container {
+                height: 300px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .diff-btn, .control-btn {
+                padding: 10px 15px;
+                font-size: 1rem;
+                min-width: 100px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
             }
         }
     </style>
 </head>
 <body>
-    <img id="header-image" src="Poisonous-pomato-berry.jpg" alt="Poisonous Pomato Berry">
-    <h1>Pomato Puzzle</h1>
+    <header>
+        <h1>🍅 Pomato Puzzle 🥔</h1>
+    </header>
     
-    <div id="difficulty">
-        <button id="easy-btn">Easy (3×3)</button>
-        <button id="medium-btn">Medium (4×4)</button>
-        <button id="hard-btn">Hard (5×5)</button>
+    <div class="game-container">
+        <div class="difficulty-controls">
+            <button id="easy-btn" class="diff-btn active">Easy (3×3)</button>
+            <button id="medium-btn" class="diff-btn">Medium (4×4)</button>
+            <button id="hard-btn" class="diff-btn">Hard (5×5)</button>
+        </div>
+        
+        <div class="stats">
+            <div id="moves">Moves: 0</div>
+            <div id="timer">Time: 00:00</div>
+        </div>
+        
+        <div id="puzzle-container" class="puzzle-container"></div>
+        
+        <div class="game-controls">
+            <button id="shuffle-btn" class="control-btn">Shuffle Tiles</button>
+            <button id="solve-btn" class="control-btn">Show Solution</button>
+        </div>
+        
+        <div id="win-message" class="win-message"></div>
     </div>
     
-    <div id="moves">Moves: 0</div>
-    <div id="win-message"></div>
-    
-    <div id="puzzle-container"></div>
-    
-    <div id="controls">
-        <button id="shuffle-btn">Shuffle</button>
+    <div class="instructions">
+        <h3>How to Play</h3>
+        <p>• Click tiles adjacent to the empty space to move them</p>
+        <p>• Rearrange the tiles to reconstruct the original image</p>
+        <p>• Complete the puzzle in as few moves as possible!</p>
     </div>
+    
+    <footer>
+        <p>Created with 🥔 and ❤️ | Pomato Puzzle Game</p>
+    </footer>
 
     <script>
         // Game variables
         const puzzleContainer = document.getElementById('puzzle-container');
         const shuffleBtn = document.getElementById('shuffle-btn');
+        const solveBtn = document.getElementById('solve-btn');
         const movesDisplay = document.getElementById('moves');
+        const timerDisplay = document.getElementById('timer');
         const winMessage = document.getElementById('win-message');
         const easyBtn = document.getElementById('easy-btn');
         const mediumBtn = document.getElementById('medium-btn');
         const hardBtn = document.getElementById('hard-btn');
         
-        let size = 4; // Default medium (4×4)
+        let size = 3; // Default: Easy (3×3)
         let tiles = [];
         let emptyPos = {row: size-1, col: size-1};
         let moves = 0;
         let gameStarted = false;
-        const imageUrl = 'Poisonous-pomato-berry.jpg';
+        let gameSolved = false;
+        let startTime = null;
+        let timerInterval = null;
+        const imageUrl = 'poisonous-pomato-berry.jpg';
         
         // Initialize the game
         function initGame() {
+            // Clear previous game state
             puzzleContainer.innerHTML = '';
-            puzzleContainer.style.width = `${size * 100}px`;
-            puzzleContainer.style.height = `${size * 100}px`;
-            
             tiles = [];
             moves = 0;
             movesDisplay.textContent = 'Moves: 0';
             winMessage.textContent = '';
             gameStarted = false;
+            gameSolved = false;
             emptyPos = {row: size-1, col: size-1};
+            
+            // Stop any running timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                timerDisplay.textContent = 'Time: 00:00';
+            }
+            
+            // Set container dimensions based on difficulty
+            puzzleContainer.style.width = `${size * 100}px`;
+            puzzleContainer.style.height = `${size * 100}px`;
             
             // Create tiles
             for (let row = 0; row < size; row++) {
@@ -145,15 +312,23 @@
                     
                     const tile = document.createElement('div');
                     tile.className = 'puzzle-tile';
-                    tile.style.width = `${100/size}%`;
-                    tile.style.height = `${100/size}%`;
+                    
+                    // Calculate dimensions and position
+                    const tileSize = 100 / size;
+                    tile.style.width = `${tileSize}%`;
+                    tile.style.height = `${tileSize}%`;
+                    
+                    // Set background image with correct positioning
                     tile.style.backgroundImage = `url(${imageUrl})`;
-                    tile.style.backgroundPosition = `-${col * (100/size)}% -${row * (100/size)}%`;
+                    tile.style.backgroundSize = `${size * 100}% ${size * 100}%`;
+                    tile.style.backgroundPosition = `-${col * tileSize}% -${row * tileSize}%`;
+                    
                     tile.dataset.row = row;
                     tile.dataset.col = col;
                     tile.dataset.correctRow = row;
                     tile.dataset.correctCol = col;
                     
+                    // Only show numbers on smaller puzzles
                     if (size <= 4) {
                         tile.textContent = (row * size + col + 1).toString();
                     }
@@ -171,22 +346,29 @@
         
         // Update tile position on screen
         function updateTilePosition(tile, row, col) {
-            tile.style.left = `${col * (100/size)}%`;
-            tile.style.top = `${row * (100/size)}%`;
+            const tileSize = 100 / size;
+            tile.style.left = `${col * tileSize}%`;
+            tile.style.top = `${row * tileSize}%`;
             tile.dataset.row = row;
             tile.dataset.col = col;
         }
         
         // Move a tile if possible
         function moveTile(tile) {
+            if (gameSolved) return;
+            
             const row = parseInt(tile.dataset.row);
             const col = parseInt(tile.dataset.col);
+            
+            // Start timer on first move
+            if (!gameStarted) {
+                startTimer();
+                gameStarted = true;
+            }
             
             // Check if tile is adjacent to empty space
             if ((Math.abs(row - emptyPos.row) === 1 && col === emptyPos.col) ||
                 (Math.abs(col - emptyPos.col) === 1 && row === emptyPos.row)) {
-                
-                if (!gameStarted) gameStarted = true;
                 
                 // Swap positions
                 updateTilePosition(tile, emptyPos.row, emptyPos.col);
@@ -198,7 +380,7 @@
                 
                 // Check if puzzle is solved
                 if (checkWin()) {
-                    winMessage.textContent = `You won in ${moves} moves!`;
+                    winGame();
                 }
             }
         }
@@ -214,9 +396,20 @@
             return true;
         }
         
+        // Handle win condition
+        function winGame() {
+            gameSolved = true;
+            clearInterval(timerInterval);
+            
+            const timeTaken = timerDisplay.textContent.replace('Time: ', '');
+            winMessage.textContent = `Congratulations! You solved the puzzle in ${moves} moves and ${timeTaken}!`;
+            winMessage.style.color = '#4CAF50';
+            winMessage.style.fontWeight = 'bold';
+        }
+        
         // Shuffle the tiles
         function shuffleTiles() {
-            if (gameStarted) return;
+            if (gameSolved) return;
             
             const totalTiles = size * size - 1;
             const positions = [];
@@ -230,9 +423,21 @@
                 [positions[i], positions[j]] = [positions[j], positions[i]];
             }
             
+            // Reset game state
+            moves = 0;
+            movesDisplay.textContent = 'Moves: 0';
+            winMessage.textContent = '';
+            gameStarted = false;
+            gameSolved = false;
             emptyPos = {row: size-1, col: size-1};
-            let index = 0;
             
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                timerDisplay.textContent = 'Time: 00:00';
+            }
+            
+            let index = 0;
             for (let row = 0; row < size; row++) {
                 for (let col = 0; col < size; col++) {
                     if (row === size-1 && col === size-1) continue;
@@ -245,34 +450,73 @@
                     index++;
                 }
             }
-            
-            // Ensure the puzzle is solvable
-            if (!isSolvable(positions)) {
-                [positions[0], positions[1]] = [positions[1], positions[0]];
-                shuffleTiles();
-            }
         }
         
-        // Check if the puzzle is solvable
-        function isSolvable(positions) {
-            let inversions = 0;
-            for (let i = 0; i < positions.length; i++) {
-                for (let j = i + 1; j < positions.length; j++) {
-                    if (positions[i] > positions[j]) inversions++;
-                }
-            }
-            
-            if (size % 2 === 1) return inversions % 2 === 0;
-            return (inversions + emptyPos.row) % 2 === 1;
+        // Start the game timer
+        function startTimer() {
+            startTime = new Date();
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((new Date() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                const seconds = (elapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `Time: ${minutes}:${seconds}`;
+            }, 1000);
         }
         
         // Event listeners
         shuffleBtn.addEventListener('click', shuffleTiles);
-        easyBtn.addEventListener('click', () => { size = 3; initGame(); });
-        mediumBtn.addEventListener('click', () => { size = 4; initGame(); });
-        hardBtn.addEventListener('click', () => { size = 5; initGame(); });
         
-        // Start the game
+        solveBtn.addEventListener('click', () => {
+            if (gameSolved) return;
+            
+            // Reset tiles to correct positions
+            let index = 0;
+            for (let row = 0; row < size; row++) {
+                for (let col = 0; col < size; col++) {
+                    if (row === size-1 && col === size-1) continue;
+                    
+                    const tile = tiles[index];
+                    updateTilePosition(tile, row, col);
+                    index++;
+                }
+            }
+            
+            // Set empty space to bottom-right
+            emptyPos = {row: size-1, col: size-1};
+            
+            // Mark as solved
+            winGame();
+            winMessage.textContent = "Solution displayed. Try to solve it yourself next time!";
+            winMessage.style.color = "#FF5722";
+        });
+        
+        // Difficulty buttons
+        easyBtn.addEventListener('click', () => {
+            size = 3;
+            setActiveButton(easyBtn);
+            initGame();
+        });
+        
+        mediumBtn.addEventListener('click', () => {
+            size = 4;
+            setActiveButton(mediumBtn);
+            initGame();
+        });
+        
+        hardBtn.addEventListener('click', () => {
+            size = 5;
+            setActiveButton(hardBtn);
+            initGame();
+        });
+        
+        function setActiveButton(btn) {
+            document.querySelectorAll('.diff-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            btn.classList.add('active');
+        }
+        
+        // Initialize the game
         initGame();
     </script>
 </body>
