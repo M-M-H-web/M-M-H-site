@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomato Puzzle - Fixed Image Slicing</title>
+    <title>Pomato Puzzle Game</title>
     <style>
         * {
             margin: 0;
@@ -13,294 +13,210 @@
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background: linear-gradient(135deg, #8bc34a, #4caf50);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            color: #f0f0f0;
-            overflow-x: hidden;
+            color: #2e3a33;
         }
         
         header {
             text-align: center;
-            margin: 15px 0 25px;
+            margin: 20px 0 30px;
             width: 100%;
-            max-width: 800px;
-            animation: fadeIn 1s ease-out;
+            max-width: 600px;
         }
         
         h1 {
-            font-size: 3rem;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            margin-bottom: 5px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px 40px;
-            border-radius: 20px;
+            font-size: 2.8rem;
+            color: #f9f9f9;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #8b4513, #5d4037);
+            padding: 15px 25px;
+            border-radius: 15px;
             display: inline-block;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: #ffd700;
-            margin-top: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         .game-container {
-            background: rgba(30, 30, 40, 0.85);
+            background: rgba(255, 255, 255, 0.92);
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             padding: 25px;
             width: 100%;
-            max-width: 800px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            animation: slideUp 0.8s ease-out;
+            max-width: 600px;
+            margin-bottom: 30px;
         }
         
         .difficulty-controls {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }
         
         .diff-btn {
-            background: linear-gradient(to bottom, #8b4513, #5d4037);
-            color: #ffd700;
+            background: #8b4513;
+            color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 12px;
+            padding: 12px 20px;
+            border-radius: 50px;
             cursor: pointer;
             font-size: 1.1rem;
             font-weight: bold;
             transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            min-width: 130px;
-            border: 2px solid #b8860b;
-            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            min-width: 120px;
         }
         
         .diff-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            background: linear-gradient(to bottom, #a0522d, #6d4c41);
+            background: #a0522d;
+            transform: translateY(-3px);
         }
         
         .diff-btn.active {
-            background: linear-gradient(to bottom, #5d4037, #3e2723);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-            color: #ffcc70;
+            background: #5d4037;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
         }
         
-        .stats-container {
+        .stats {
             display: flex;
-            justify-content: space-around;
-            margin-bottom: 25px;
-            background: rgba(20, 20, 30, 0.7);
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: #f5f5dc;
             padding: 15px;
-            border-radius: 15px;
+            border-radius: 12px;
             font-size: 1.2rem;
             font-weight: bold;
-            border: 1px solid rgba(139, 69, 19, 0.5);
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
-        }
-        
-        .stat-box {
-            text-align: center;
-            padding: 10px;
-            min-width: 150px;
-            background: rgba(40, 40, 60, 0.6);
-            border-radius: 10px;
-            border: 1px solid #8b4513;
-        }
-        
-        .stat-value {
-            color: #ffcc70;
-            font-size: 1.8rem;
-            margin-top: 5px;
-            text-shadow: 0 0 8px rgba(255, 204, 112, 0.6);
-        }
-        
-        .puzzle-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
         }
         
         .puzzle-container {
+            width: 100%;
+            height: 400px;
+            margin: 0 auto 25px;
             position: relative;
-            border: 4px solid #8b4513;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
             overflow: hidden;
-            background: #1a1a2e;
+            background: #f0e68c;
         }
         
         .puzzle-tile {
             position: absolute;
+            background-size: 100% 100%;
             background-repeat: no-repeat;
-            border: 1px solid rgba(139, 69, 19, 0.7);
-            transition: all 0.25s ease;
+            border: 1px solid rgba(139, 69, 19, 0.5);
+            transition: all 0.3s ease;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
             font-weight: bold;
-            color: rgba(255, 255, 255, 0.7);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            z-index: 2;
+            color: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
         }
         
         .puzzle-tile:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             z-index: 10;
-            border-color: #ffd700;
         }
         
         .game-controls {
             display: flex;
             justify-content: center;
-            gap: 25px;
-            margin-top: 10px;
+            gap: 20px;
+            margin-top: 15px;
         }
         
         .control-btn {
-            background: linear-gradient(to bottom, #5d4037, #3e2723);
-            color: #ffd700;
-            border: 2px solid #b8860b;
-            padding: 14px 35px;
-            border-radius: 12px;
+            background: #5d4037;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             transition: all 0.3s;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-            min-width: 200px;
-            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            min-width: 150px;
         }
         
         .control-btn:hover {
-            background: linear-gradient(to bottom, #8b4513, #5d4037);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            background: #8b4513;
+            transform: translateY(-3px);
         }
         
         .win-message {
             text-align: center;
             font-size: 1.8rem;
-            color: #4caf50;
+            color: #8b4513;
             font-weight: bold;
-            margin-top: 25px;
-            padding: 20px;
-            background: rgba(20, 40, 20, 0.7);
-            border-radius: 15px;
-            border: 2px solid #4caf50;
-            animation: pulse 2s infinite;
+            margin-top: 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(245, 245, 220, 0.8);
+            border-radius: 12px;
+            padding: 10px;
         }
         
         footer {
             text-align: center;
             margin-top: 20px;
             color: #f9f9f9;
-            font-size: 1.1rem;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
-            padding: 15px;
+            font-size: 1rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
         
         .instructions {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 12px;
             margin-top: 20px;
-            max-width: 800px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            max-width: 600px;
         }
         
         .instructions h3 {
-            color: #ffd700;
-            margin-bottom: 15px;
+            color: white;
+            margin-bottom: 10px;
             text-align: center;
-            font-size: 1.5rem;
         }
         
         .instructions p {
             color: #f0f0f0;
-            margin-bottom: 12px;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            text-align: center;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
         }
         
-        .image-preview {
-            text-align: center;
-            margin: 25px 0;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-        }
-        
-        .image-preview img {
-            max-width: 300px;
-            border: 3px solid #8b4513;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); }
-            50% { box-shadow: 0 0 25px rgba(76, 175, 80, 0.8); }
-            100% { box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); }
-        }
-        
-        @media (max-width: 700px) {
-            .game-container {
-                padding: 15px;
+        @media (max-width: 600px) {
+            .puzzle-container {
+                height: 300px;
             }
             
             h1 {
                 font-size: 2.2rem;
-                padding: 12px 25px;
             }
             
             .diff-btn, .control-btn {
                 padding: 10px 15px;
                 font-size: 1rem;
-                min-width: 110px;
+                min-width: 100px;
             }
             
-            .stat-box {
-                min-width: 120px;
-                padding: 8px;
-            }
-            
-            .stat-value {
-                font-size: 1.5rem;
-            }
-            
-            .control-btn {
-                min-width: 160px;
-                padding: 12px 20px;
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
             }
         }
     </style>
@@ -308,14 +224,7 @@
 <body>
     <header>
         <h1>🍅 Pomato Puzzle 🥔</h1>
-        <div class="subtitle">Slice and solve the mystery berry!</div>
     </header>
-    
-    <div class="image-preview">
-        <h3>Your Pomato Berry</h3>
-        <img src="https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Pomato Berry Preview">
-        <p>Complete the puzzle to reveal the full image</p>
-    </div>
     
     <div class="game-container">
         <div class="difficulty-controls">
@@ -324,28 +233,16 @@
             <button id="hard-btn" class="diff-btn">Hard (5×5)</button>
         </div>
         
-        <div class="stats-container">
-            <div class="stat-box">
-                <div>Moves</div>
-                <div id="moves" class="stat-value">0</div>
-            </div>
-            <div class="stat-box">
-                <div>Time</div>
-                <div id="timer" class="stat-value">00:00</div>
-            </div>
-            <div class="stat-box">
-                <div>Tiles</div>
-                <div id="tile-count" class="stat-value">8</div>
-            </div>
+        <div class="stats">
+            <div id="moves">Moves: 0</div>
+            <div id="timer">Time: 00:00</div>
         </div>
         
-        <div class="puzzle-wrapper">
-            <div id="puzzle-container" class="puzzle-container" style="width: 400px; height: 400px;"></div>
-        </div>
+        <div id="puzzle-container" class="puzzle-container"></div>
         
         <div class="game-controls">
-            <button id="shuffle-btn" class="control-btn">🔀 Shuffle Tiles</button>
-            <button id="solve-btn" class="control-btn">✨ Show Solution</button>
+            <button id="shuffle-btn" class="control-btn">Shuffle Tiles</button>
+            <button id="solve-btn" class="control-btn">Show Solution</button>
         </div>
         
         <div id="win-message" class="win-message"></div>
@@ -353,13 +250,13 @@
     
     <div class="instructions">
         <h3>How to Play</h3>
-        <p>• Click on tiles adjacent to the empty space to move them</p>
+        <p>• Click tiles adjacent to the empty space to move them</p>
         <p>• Rearrange the tiles to reconstruct the original image</p>
         <p>• Complete the puzzle in as few moves as possible!</p>
     </div>
     
     <footer>
-        <p>Created with 🥔 and ❤️ | Pomato Puzzle Game | Perfect Image Slicing</p>
+        <p>Created with 🥔 and ❤️ | Pomato Puzzle Game</p>
     </footer>
 
     <script>
@@ -369,7 +266,6 @@
         const solveBtn = document.getElementById('solve-btn');
         const movesDisplay = document.getElementById('moves');
         const timerDisplay = document.getElementById('timer');
-        const tileCountDisplay = document.getElementById('tile-count');
         const winMessage = document.getElementById('win-message');
         const easyBtn = document.getElementById('easy-btn');
         const mediumBtn = document.getElementById('medium-btn');
@@ -383,9 +279,7 @@
         let gameSolved = false;
         let startTime = null;
         let timerInterval = null;
-        
-        // Using a placeholder image - replace with your image URL
-        const imageUrl 'Poisonous-pomato-berry.jpg';
+        const imageUrl = 'poisonous-pomato-berry.jpg';
         
         // Initialize the game
         function initGame() {
@@ -393,27 +287,22 @@
             puzzleContainer.innerHTML = '';
             tiles = [];
             moves = 0;
-            movesDisplay.textContent = '0';
+            movesDisplay.textContent = 'Moves: 0';
             winMessage.textContent = '';
             gameStarted = false;
             gameSolved = false;
             emptyPos = {row: size-1, col: size-1};
-            tileCountDisplay.textContent = (size * size - 1).toString();
             
             // Stop any running timer
             if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null;
-                timerDisplay.textContent = '00:00';
+                timerDisplay.textContent = 'Time: 00:00';
             }
             
             // Set container dimensions based on difficulty
-            const containerSize = Math.min(400, window.innerWidth - 50);
-            puzzleContainer.style.width = `${containerSize}px`;
-            puzzleContainer.style.height = `${containerSize}px`;
-            
-            // Calculate tile size in pixels
-            const tileSize = containerSize / size;
+            puzzleContainer.style.width = `${size * 100}px`;
+            puzzleContainer.style.height = `${size * 100}px`;
             
             // Create tiles
             for (let row = 0; row < size; row++) {
@@ -424,26 +313,16 @@
                     const tile = document.createElement('div');
                     tile.className = 'puzzle-tile';
                     
-                    // Set tile dimensions
-                    tile.style.width = `${tileSize}px`;
-                    tile.style.height = `${tileSize}px`;
+                    // Calculate dimensions and position
+                    const tileSize = 100 / size;
+                    tile.style.width = `${tileSize}%`;
+                    tile.style.height = `${tileSize}%`;
                     
                     // Set background image with correct positioning
                     tile.style.backgroundImage = `url(${imageUrl})`;
+                    tile.style.backgroundSize = `${size * 100}% ${size * 100}%`;
+                    tile.style.backgroundPosition = `-${col * tileSize}% -${row * tileSize}%`;
                     
-                    // PERFECT IMAGE SLICING - pixel-based positioning
-                    const bgWidth = containerSize;
-                    const bgHeight = containerSize;
-                    
-                    // Calculate background position in pixels
-                    const bgPosX = -col * tileSize;
-                    const bgPosY = -row * tileSize;
-                    
-                    // Set background properties
-                    tile.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
-                    tile.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
-                    
-                    // Store position data
                     tile.dataset.row = row;
                     tile.dataset.col = col;
                     tile.dataset.correctRow = row;
@@ -452,7 +331,6 @@
                     // Only show numbers on smaller puzzles
                     if (size <= 4) {
                         tile.textContent = (row * size + col + 1).toString();
-                        tile.style.fontSize = `${tileSize * 0.3}px`;
                     }
                     
                     tile.addEventListener('click', () => moveTile(tile));
@@ -461,15 +339,16 @@
                     tiles.push(tile);
                     
                     // Position the tile
-                    updateTilePosition(tile, row, col, tileSize);
+                    updateTilePosition(tile, row, col);
                 }
             }
         }
         
         // Update tile position on screen
-        function updateTilePosition(tile, row, col, tileSize) {
-            tile.style.left = `${col * tileSize}px`;
-            tile.style.top = `${row * tileSize}px`;
+        function updateTilePosition(tile, row, col) {
+            const tileSize = 100 / size;
+            tile.style.left = `${col * tileSize}%`;
+            tile.style.top = `${row * tileSize}%`;
             tile.dataset.row = row;
             tile.dataset.col = col;
         }
@@ -492,13 +371,12 @@
                 (Math.abs(col - emptyPos.col) === 1 && row === emptyPos.row)) {
                 
                 // Swap positions
-                const tileSize = puzzleContainer.clientWidth / size;
-                updateTilePosition(tile, emptyPos.row, emptyPos.col, tileSize);
+                updateTilePosition(tile, emptyPos.row, emptyPos.col);
                 emptyPos = {row: row, col: col};
                 
                 // Update moves
                 moves++;
-                movesDisplay.textContent = moves.toString();
+                movesDisplay.textContent = `Moves: ${moves}`;
                 
                 // Check if puzzle is solved
                 if (checkWin()) {
@@ -523,15 +401,10 @@
             gameSolved = true;
             clearInterval(timerInterval);
             
-            const timeTaken = timerDisplay.textContent;
-            winMessage.textContent = `🎉 Congratulations! You solved the puzzle in ${moves} moves and ${timeTaken}!`;
+            const timeTaken = timerDisplay.textContent.replace('Time: ', '');
+            winMessage.textContent = `Congratulations! You solved the puzzle in ${moves} moves and ${timeTaken}!`;
             winMessage.style.color = '#4CAF50';
-            
-            // Add celebration effect
-            puzzleContainer.style.boxShadow = '0 0 30px rgba(76, 175, 80, 0.7)';
-            setTimeout(() => {
-                puzzleContainer.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.6)';
-            }, 3000);
+            winMessage.style.fontWeight = 'bold';
         }
         
         // Shuffle the tiles
@@ -552,7 +425,7 @@
             
             // Reset game state
             moves = 0;
-            movesDisplay.textContent = '0';
+            movesDisplay.textContent = 'Moves: 0';
             winMessage.textContent = '';
             gameStarted = false;
             gameSolved = false;
@@ -561,10 +434,9 @@
             if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null;
-                timerDisplay.textContent = '00:00';
+                timerDisplay.textContent = 'Time: 00:00';
             }
             
-            const tileSize = puzzleContainer.clientWidth / size;
             let index = 0;
             for (let row = 0; row < size; row++) {
                 for (let col = 0; col < size; col++) {
@@ -574,7 +446,7 @@
                     const tileRow = Math.floor(pos / size);
                     const tileCol = pos % size;
                     
-                    updateTilePosition(tiles[index], tileRow, tileCol, tileSize);
+                    updateTilePosition(tiles[index], tileRow, tileCol);
                     index++;
                 }
             }
@@ -587,7 +459,7 @@
                 const elapsed = Math.floor((new Date() - startTime) / 1000);
                 const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
                 const seconds = (elapsed % 60).toString().padStart(2, '0');
-                timerDisplay.textContent = `${minutes}:${seconds}`;
+                timerDisplay.textContent = `Time: ${minutes}:${seconds}`;
             }, 1000);
         }
         
@@ -598,14 +470,13 @@
             if (gameSolved) return;
             
             // Reset tiles to correct positions
-            const tileSize = puzzleContainer.clientWidth / size;
             let index = 0;
             for (let row = 0; row < size; row++) {
                 for (let col = 0; col < size; col++) {
                     if (row === size-1 && col === size-1) continue;
                     
                     const tile = tiles[index];
-                    updateTilePosition(tile, row, col, tileSize);
+                    updateTilePosition(tile, row, col);
                     index++;
                 }
             }
@@ -647,36 +518,6 @@
         
         // Initialize the game
         initGame();
-        
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            if (!gameStarted) return;
-            
-            const tileSize = puzzleContainer.clientWidth / size;
-            for (let i = 0; i < tiles.length; i++) {
-                const tile = tiles[i];
-                const row = parseInt(tile.dataset.row);
-                const col = parseInt(tile.dataset.col);
-                
-                // Update tile dimensions and position
-                tile.style.width = `${tileSize}px`;
-                tile.style.height = `${tileSize}px`;
-                
-                // Update background positioning
-                const bgPosX = -col * tileSize;
-                const bgPosY = -row * tileSize;
-                tile.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
-                
-                // Update position
-                tile.style.left = `${col * tileSize}px`;
-                tile.style.top = `${row * tileSize}px`;
-                
-                // Update font size
-                if (size <= 4) {
-                    tile.style.fontSize = `${tileSize * 0.3}px`;
-                }
-            }
-        });
     </script>
 </body>
 </html>
