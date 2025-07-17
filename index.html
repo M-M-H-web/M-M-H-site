@@ -3,261 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomato Puzzle Game</title>
+    <title>Poisonous Pomato Puzzle</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #8bc34a, #4caf50);
+            background: #2c3e50;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            color: #2e3a33;
+            color: #ecf0f1;
         }
         
         header {
             text-align: center;
-            margin: 20px 0 30px;
-            width: 100%;
-            max-width: 600px;
-        }
-        
-        h1 {
-            font-size: 2.8rem;
-            color: #f9f9f9;
-            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #8b4513, #5d4037);
-            padding: 15px 25px;
-            border-radius: 15px;
-            display: inline-block;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .game-container {
-            background: rgba(255, 255, 255, 0.92);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 25px;
-            width: 100%;
-            max-width: 600px;
             margin-bottom: 30px;
         }
         
-        .difficulty-controls {
+        h1 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .difficulty {
+            margin: 20px 0;
             display: flex;
-            justify-content: center;
             gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
+            justify-content: center;
         }
         
         .diff-btn {
-            background: #8b4513;
+            background: #3498db;
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 50px;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 1.1rem;
             font-weight: bold;
             transition: all 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            min-width: 120px;
         }
         
         .diff-btn:hover {
-            background: #a0522d;
-            transform: translateY(-3px);
+            background: #2980b9;
         }
         
         .diff-btn.active {
-            background: #5d4037;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+            background: #e74c3c;
         }
         
         .stats {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
-            background: #f5f5dc;
-            padding: 15px;
-            border-radius: 12px;
+            width: 300px;
+            margin: 0 auto 20px;
             font-size: 1.2rem;
-            font-weight: bold;
         }
         
-        .puzzle-container {
-            width: 100%;
+        #puzzle-container {
+            width: 400px;
             height: 400px;
-            margin: 0 auto 25px;
+            margin: 0 auto;
             position: relative;
-            border: 3px solid #8b4513;
-            border-radius: 10px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            background: #f0e68c;
+            border: 3px solid #e74c3c;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            background: #34495e;
         }
         
         .puzzle-tile {
             position: absolute;
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            border: 1px solid rgba(139, 69, 19, 0.5);
-            transition: all 0.3s ease;
+            background-size: 400px 400px;
+            border: 1px solid #bdc3c7;
+            transition: all 0.2s;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 24px;
             font-weight: bold;
-            color: rgba(0, 0, 0, 0.5);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            color: rgba(255,255,255,0.7);
+            text-shadow: 1px 1px 2px black;
         }
         
         .puzzle-tile:hover {
             transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            z-index: 10;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
         
-        .game-controls {
+        .controls {
+            margin: 20px;
             display: flex;
-            justify-content: center;
             gap: 20px;
-            margin-top: 15px;
+            justify-content: center;
         }
         
-        .control-btn {
-            background: #5d4037;
+        button {
+            background: #e74c3c;
             color: white;
             border: none;
-            padding: 14px 28px;
-            border-radius: 50px;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             transition: all 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            min-width: 150px;
         }
         
-        .control-btn:hover {
-            background: #8b4513;
-            transform: translateY(-3px);
+        button:hover {
+            background: #c0392b;
         }
         
-        .win-message {
-            text-align: center;
-            font-size: 1.8rem;
-            color: #8b4513;
+        #win-message {
+            font-size: 1.5rem;
+            color: #2ecc71;
             font-weight: bold;
-            margin-top: 20px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(245, 245, 220, 0.8);
-            border-radius: 12px;
-            padding: 10px;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #f9f9f9;
-            font-size: 1rem;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-        
-        .instructions {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 20px;
-            max-width: 600px;
-        }
-        
-        .instructions h3 {
-            color: white;
-            margin-bottom: 10px;
+            margin: 20px;
+            height: 30px;
             text-align: center;
         }
         
-        .instructions p {
-            color: #f0f0f0;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-        
-        @media (max-width: 600px) {
-            .puzzle-container {
+        @media (max-width: 500px) {
+            #puzzle-container {
+                width: 300px;
                 height: 300px;
             }
             
             h1 {
-                font-size: 2.2rem;
-            }
-            
-            .diff-btn, .control-btn {
-                padding: 10px 15px;
-                font-size: 1rem;
-                min-width: 100px;
-            }
-            
-            .stats {
-                flex-direction: column;
-                gap: 10px;
-                align-items: center;
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>🍅 Pomato Puzzle 🥔</h1>
+        <h1>Poisonous Pomato Puzzle</h1>
+        <p>Rearrange the tiles to complete the picture!</p>
     </header>
     
-    <div class="game-container">
-        <div class="difficulty-controls">
-            <button id="easy-btn" class="diff-btn active">Easy (3×3)</button>
-            <button id="medium-btn" class="diff-btn">Medium (4×4)</button>
-            <button id="hard-btn" class="diff-btn">Hard (5×5)</button>
-        </div>
-        
-        <div class="stats">
-            <div id="moves">Moves: 0</div>
-            <div id="timer">Time: 00:00</div>
-        </div>
-        
-        <div id="puzzle-container" class="puzzle-container"></div>
-        
-        <div class="game-controls">
-            <button id="shuffle-btn" class="control-btn">Shuffle Tiles</button>
-            <button id="solve-btn" class="control-btn">Show Solution</button>
-        </div>
-        
-        <div id="win-message" class="win-message"></div>
+    <div class="difficulty">
+        <button id="easy-btn" class="diff-btn active">Easy (3×3)</button>
+        <button id="medium-btn" class="diff-btn">Medium (4×4)</button>
+        <button id="hard-btn" class="diff-btn">Hard (5×5)</button>
     </div>
     
-    <div class="instructions">
-        <h3>How to Play</h3>
-        <p>• Click tiles adjacent to the empty space to move them</p>
-        <p>• Rearrange the tiles to reconstruct the original image</p>
-        <p>• Complete the puzzle in as few moves as possible!</p>
+    <div class="stats">
+        <div id="moves">Moves: 0</div>
+        <div id="timer">Time: 00:00</div>
     </div>
     
-    <footer>
-        <p>Created with 🥔 and ❤️ | Pomato Puzzle Game</p>
-    </footer>
+    <div id="puzzle-container"></div>
+    
+    <div id="win-message"></div>
+    
+    <div class="controls">
+        <button id="shuffle-btn">Shuffle</button>
+        <button id="solve-btn">Solve</button>
+    </div>
 
     <script>
         // Game variables
@@ -279,11 +189,12 @@
         let gameSolved = false;
         let startTime = null;
         let timerInterval = null;
-        const imageUrl = 'poisonous-pomato-berry.jpg';
+        
+        // Use your image - make sure it's in the same directory
+        const imageUrl = 'Poisonous-pomato-berry.jpg';
         
         // Initialize the game
         function initGame() {
-            // Clear previous game state
             puzzleContainer.innerHTML = '';
             tiles = [];
             moves = 0;
@@ -293,42 +204,41 @@
             gameSolved = false;
             emptyPos = {row: size-1, col: size-1};
             
-            // Stop any running timer
             if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null;
                 timerDisplay.textContent = 'Time: 00:00';
             }
             
-            // Set container dimensions based on difficulty
+            // Adjust container size
             puzzleContainer.style.width = `${size * 100}px`;
             puzzleContainer.style.height = `${size * 100}px`;
             
             // Create tiles
             for (let row = 0; row < size; row++) {
                 for (let col = 0; col < size; col++) {
-                    // Skip the bottom-right tile (empty space)
                     if (row === size-1 && col === size-1) continue;
                     
                     const tile = document.createElement('div');
                     tile.className = 'puzzle-tile';
                     
-                    // Calculate dimensions and position
+                    // Set tile size
                     const tileSize = 100 / size;
                     tile.style.width = `${tileSize}%`;
                     tile.style.height = `${tileSize}%`;
                     
-                    // Set background image with correct positioning
+                    // Set background image with precise positioning
                     tile.style.backgroundImage = `url(${imageUrl})`;
                     tile.style.backgroundSize = `${size * 100}% ${size * 100}%`;
-                    tile.style.backgroundPosition = `-${col * tileSize}% -${row * tileSize}%`;
+                    tile.style.backgroundPosition = 
+                        `${(col / (size-1)) * 100}% ${(row / (size-1)) * 100}%`;
                     
                     tile.dataset.row = row;
                     tile.dataset.col = col;
                     tile.dataset.correctRow = row;
                     tile.dataset.correctCol = col;
                     
-                    // Only show numbers on smaller puzzles
+                    // Show numbers on smaller puzzles
                     if (size <= 4) {
                         tile.textContent = (row * size + col + 1).toString();
                     }
@@ -344,7 +254,7 @@
             }
         }
         
-        // Update tile position on screen
+        // Update tile position
         function updateTilePosition(tile, row, col) {
             const tileSize = 100 / size;
             tile.style.left = `${col * tileSize}%`;
@@ -353,39 +263,34 @@
             tile.dataset.col = col;
         }
         
-        // Move a tile if possible
+        // Move a tile
         function moveTile(tile) {
             if (gameSolved) return;
             
             const row = parseInt(tile.dataset.row);
             const col = parseInt(tile.dataset.col);
             
-            // Start timer on first move
             if (!gameStarted) {
                 startTimer();
                 gameStarted = true;
             }
             
-            // Check if tile is adjacent to empty space
             if ((Math.abs(row - emptyPos.row) === 1 && col === emptyPos.col) ||
                 (Math.abs(col - emptyPos.col) === 1 && row === emptyPos.row)) {
                 
-                // Swap positions
                 updateTilePosition(tile, emptyPos.row, emptyPos.col);
                 emptyPos = {row: row, col: col};
                 
-                // Update moves
                 moves++;
                 movesDisplay.textContent = `Moves: ${moves}`;
                 
-                // Check if puzzle is solved
                 if (checkWin()) {
                     winGame();
                 }
             }
         }
         
-        // Check if puzzle is solved
+        // Check win condition
         function checkWin() {
             for (const tile of tiles) {
                 if (parseInt(tile.dataset.row) !== parseInt(tile.dataset.correctRow) || 
@@ -396,18 +301,16 @@
             return true;
         }
         
-        // Handle win condition
+        // Handle win
         function winGame() {
             gameSolved = true;
             clearInterval(timerInterval);
             
             const timeTaken = timerDisplay.textContent.replace('Time: ', '');
-            winMessage.textContent = `Congratulations! You solved the puzzle in ${moves} moves and ${timeTaken}!`;
-            winMessage.style.color = '#4CAF50';
-            winMessage.style.fontWeight = 'bold';
+            winMessage.textContent = `You won in ${moves} moves and ${timeTaken}!`;
         }
         
-        // Shuffle the tiles
+        // Shuffle tiles
         function shuffleTiles() {
             if (gameSolved) return;
             
@@ -452,7 +355,7 @@
             }
         }
         
-        // Start the game timer
+        // Start timer
         function startTimer() {
             startTime = new Date();
             timerInterval = setInterval(() => {
@@ -463,13 +366,10 @@
             }, 1000);
         }
         
-        // Event listeners
-        shuffleBtn.addEventListener('click', shuffleTiles);
-        
-        solveBtn.addEventListener('click', () => {
+        // Solve the puzzle
+        function solvePuzzle() {
             if (gameSolved) return;
             
-            // Reset tiles to correct positions
             let index = 0;
             for (let row = 0; row < size; row++) {
                 for (let col = 0; col < size; col++) {
@@ -481,16 +381,15 @@
                 }
             }
             
-            // Set empty space to bottom-right
             emptyPos = {row: size-1, col: size-1};
-            
-            // Mark as solved
             winGame();
-            winMessage.textContent = "Solution displayed. Try to solve it yourself next time!";
-            winMessage.style.color = "#FF5722";
-        });
+            winMessage.textContent = "Solution displayed!";
+        }
         
-        // Difficulty buttons
+        // Event listeners
+        shuffleBtn.addEventListener('click', shuffleTiles);
+        solveBtn.addEventListener('click', solvePuzzle);
+        
         easyBtn.addEventListener('click', () => {
             size = 3;
             setActiveButton(easyBtn);
